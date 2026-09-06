@@ -104,6 +104,22 @@ Entitlement rules/allocation tracking, welfare transactions (POS distribution), 
 sales, procurement, finance, and reporting are Phases 3–7. `WelfareProgram` already exists as a
 lightweight table so Phase 3 can attach entitlement rules to it without a schema change.
 
+## What's implemented — Phase 5 (POS: Normal Sales)
+
+- **Cashier Shifts**: `/cashier-shifts/open`, `/{id}/close`, `/my-open-shift`. A cashier must have
+  an open shift at a mart before any sale can be recorded there — enforced in `sale_service`,
+  not just the UI. Closing a shift freezes cash/card/digital sales totals, refunds, and this
+  cashier's welfare distribution value for that window, then computes `expected_cash` vs
+  `actual_cash` and the `cash_difference` (spec section 25).
+- **Sales**: `/sales` — real stock deduction per line item (via the same `stock_service` used
+  everywhere else), computed change due for cash payments, and `GET /sales/{id}` doubles as the
+  receipt data endpoint. Refunds (`/sales/{id}/refund`) restore stock and are logged, never
+  silently deleted.
+- **Welfare Sale** (the other POS mode) is unchanged from Phase 3/4 — `/welfare-transactions` —
+  intentionally a completely separate table and code path from `Sale`, per spec section 15's
+  requirement to never mix normal and welfare transactions.
+
+
 
 ## Design notes worth knowing before you extend this
 

@@ -22,3 +22,7 @@ from app.models.inventory import (  # noqa: F401
     StockMovement, StockMovementType, Supplier, SupplierStatus, TransferStatus,
     WarehouseTransfer, WarehouseTransferItem,
 )
+from app.models.pos import (  # noqa: F401
+    CashierShift, Payment, PaymentMethod, PaymentStatus, Refund, Sale, SaleItem, SaleStatus,
+    ShiftStatus,
+)
