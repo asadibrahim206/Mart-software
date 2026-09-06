@@ -3,11 +3,11 @@
 **Phase 1: Foundation** — Authentication, RBAC, Organizational structure (Organization → Region →
 District → Warehouse/Mart), Audit logging groundwork.
 
-This is a real, runnable slice — not a mockup. Every endpoint reads/writes MySQL, enforces
+This is a real, runnable slice — not a mockup. Every endpoint reads/writes PostgreSQL, enforces
 permissions, and writes to the audit log.
 
 ## Stack
-FastAPI (async) · SQLAlchemy 2.0 (async, MySQL via `asyncmy`) · Alembic · Pydantic v2 · JWT auth (python-jose) · bcrypt password hashing (passlib)
+FastAPI (async) · SQLAlchemy 2.0 (async, PostgreSQL via `asyncpg`) · Alembic · Pydantic v2 · JWT auth (python-jose) · bcrypt password hashing
 
 ## Setup
 
@@ -17,16 +17,19 @@ source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 cp .env.example .env
-# edit .env: set DATABASE_URL / DATABASE_URL_SYNC to your MySQL instance,
+# edit .env: set DATABASE_URL to your PostgreSQL instance,
 # generate a real SECRET_KEY (e.g. `python -c "import secrets; print(secrets.token_urlsafe(48))"`)
 ```
 
-Create the database itself first (Alembic won't create the schema/database, only the tables):
+Create the database itself first (Alembic won't create the database, only the tables). Using `psql`:
 
 ```sql
-CREATE DATABASE ramzan_mart CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'ramzan_user'@'localhost' IDENTIFIED BY 'changeme';
-GRANT ALL PRIVILEGES ON ramzan_mart.* TO 'ramzan_user'@'localhost';
+CREATE DATABASE ramzan_mart;
+CREATE USER ramzan_user WITH PASSWORD 'changeme';
+GRANT ALL PRIVILEGES ON DATABASE ramzan_mart TO ramzan_user;
+-- PostgreSQL 15+ also needs schema-level grants:
+\c ramzan_mart
+GRANT ALL ON SCHEMA public TO ramzan_user;
 ```
 
 Generate and apply the first migration:

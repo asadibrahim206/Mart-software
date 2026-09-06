@@ -46,8 +46,6 @@ class Region(Base, TimestampMixin, SoftDeleteMixin):
     organization: Mapped["Organization"] = relationship(back_populates="regions")
     districts: Mapped[List["District"]] = relationship(back_populates="region")
 
-    __table_args__ = ({"mysql_charset": "utf8mb4"},)
-
 
 class District(Base, TimestampMixin, SoftDeleteMixin):
     __tablename__ = "districts"

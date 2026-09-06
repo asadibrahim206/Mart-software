@@ -18,8 +18,7 @@ class Settings(BaseSettings):
     API_V1_PREFIX: str = "/api/v1"
 
     # Database
-    DATABASE_URL: str  # async driver, used by the app at runtime
-    DATABASE_URL_SYNC: str  # sync driver, used by Alembic migrations
+    DATABASE_URL: str  # async driver connection string, e.g. postgresql+asyncpg://user:pass@host:5432/dbname
 
     # Security
     SECRET_KEY: str
