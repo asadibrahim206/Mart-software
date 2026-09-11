@@ -26,3 +26,6 @@ from app.models.pos import (  # noqa: F401
     CashierShift, Payment, PaymentMethod, PaymentStatus, Refund, Sale, SaleItem, SaleStatus,
     ShiftStatus,
 )
+from app.models.finance import (  # noqa: F401
+    Expense, ExpenseCategory, ExpenseStatus, SupplierPayment,
+)
