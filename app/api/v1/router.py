@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 
 from app.api.v1 import (
-    applications, audit, auth, beneficiaries, budgets, cards, categories, commodities,
-    documents, entitlements, expenses, finance_reports, locations, organizations, products,
-    roles, sales, shifts, stock, suppliers, users, warehouse_transfers, welfare_transactions,
+    applications, audit, auth, beneficiaries, beneficiary_reports, budgets, cards, categories,
+    commodities, dashboard, documents, entitlements, expenses, exports, finance_reports,
+    inventory_reports, locations, organizations, products, roles, sales, shifts, stock,
+    suppliers, users, warehouse_transfers, welfare_reports, welfare_transactions,
 )
 
 api_router = APIRouter()
@@ -30,4 +31,9 @@ api_router.include_router(shifts.router)
 api_router.include_router(sales.router)
 api_router.include_router(expenses.router)
 api_router.include_router(finance_reports.router)
+api_router.include_router(dashboard.router)
+api_router.include_router(beneficiary_reports.router)
+api_router.include_router(welfare_reports.router)
+api_router.include_router(inventory_reports.router)
+api_router.include_router(exports.router)
 api_router.include_router(audit.router)
